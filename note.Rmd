@@ -1,0 +1,93 @@
+---
+title: "R Notebook"
+output: html_notebook
+---
+
+This is an [R Markdown](http://rmarkdown.rstudio.com) Notebook. When you execute code within the notebook, the results appear beneath the code. 
+
+Try executing this chunk by clicking the *Run* button within the chunk or by placing your cursor inside it and pressing *Ctrl+Shift+Enter*. 
+
+```{r eval=FALSE, include=FALSE}
+
+
+library(forcats)
+
+```
+
+Add a new chunk by clicking the *Insert Chunk* button on the toolbar or by pressing *Ctrl+Alt+I*.
+
+When you save the notebook, an HTML file containing the code and output will be saved alongside it (click the *Preview* button or press *Ctrl+Shift+K* to preview the HTML file).
+
+The preview shows you a rendered HTML copy of the contents of the editor. Consequently, unlike *Knit*, *Preview* does not run any R code chunks. Instead, the output of the chunk when it was last run in the editor is displayed.
+
+```{r}
+a<-c("1","2","3")
+d<-c("2","3","1","4","2")
+e<-factor(d,levels = a)
+sort(e)
+```
+## r
+factor可將character排序，但是無法發現不能排列的 characters
+不知道parse_factor 是什麼?
+
+
+```{r}
+Sys.setenv(JAVA_HOME='C:\\Program Files\\Java\\jre1.8.0_201')
+library(xlsx)
+read.xlsx(file ="C:\\Users\\Lin ting yu\\Desktop\\1.xlsx",sheetIndex="1")
+
+```
+## r
+將excel檔會入，收先要有java,並找到Java jre
+的入徑輸入
+Sys.setenv(JAVA_HOME='Java jre的入徑')
+並將期中的\改成\\
+再下載xlsx的包裹
+並輸入library(xlsx)叫出此包裹
+再用real.xlsx將當案會入，並寫出哪一個表格
+
+http://earthworm2016.pixnet.net/blog/post/320495233-r-%E8%B3%87%E6%96%99%E5%8C%AF%E5%87%BA-excel%E6%AA%94
+
+
+
+```{r}
+library(xlsx)
+read.xlsx(file ="E:\\Rpratice\\practic\\111.xls",sheetIndex="111,112",encoding='UTF-8')
+          
+```
+
+##r
+從主計處下載的excel檔為 BIG-5，所以要加encoding='UTF-8'才能輸入
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
