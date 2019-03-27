@@ -58,7 +58,9 @@ read.xlsx(file ="E:\\Rpratice\\practic\\111.xls",sheetIndex="111,112",encoding='
 
 ##r
 從主計處下載的excel檔為 BIG-5，所以要加encoding='UTF-8'才能輸入
+```{r}
 
+```
 
 
 
