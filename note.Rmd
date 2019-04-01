@@ -106,13 +106,28 @@ dim(f)
 ```
 
 ```{r}
+g<-85
+h<-55
+if(g>=90){print("優秀")}else if(g>=60){print("及格")}else{print("不及格")}
+
+ifelse(g>=90,"優秀","不優秀")
+
+if(g>=60){if(h>=60){print("都及格")}else{print("g及格")}}
+else{if(h>=60){print("h及格")}else{print("都不及格")}}
 
 
 
+for ([c]) {
+  if(c%%2==0){print("偶數")}
+  else{print("奇數")}
+}
+
+
+if (c[3] >= 3) print("c is greater than or equal to 3")
+
+#http://web.ntpu.edu.tw/~cflin/Teach/R/R06EN05Expression.pdf
 
 ```
-
-
 
 
 
