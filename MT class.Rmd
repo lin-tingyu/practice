@@ -27,6 +27,25 @@ plot(pressure)
 
 Note that the `echo = FALSE` parameter was added to the code chunk to prevent printing of the R code that generated the plot.
 
+
+```{r}
+library(lubridate)
+#時間處理的相關函數
+Sys.timezone()
+# 顯示目前電腦時區設定
+T <- ymd_hms("2019-03-18 14:04:00", tz="Asia/Taipei")
+ET<- with_tz(T,tzone="Europe/Lisbon")
+# 轉成歐洲時間
+as.integer(ymd("2019-03-11"))
+#和時間原點“1970-01-01”差多幾天－－－17966天
+Sys.Date()
+#给出當前日期
+today <- Sys.Date()
+dob <- as.Date("1956-10-12")
+difftime(today, dob, units="weeks")
+#當前日期和1956-10-12差幾週
+```
+～～～～～～～～～～～～第五章～～～～～～～～～～～～～～～～～～
 ```{r}
 a <- c(1,5,8)
 b <- c(5,8)
@@ -36,13 +55,11 @@ is.na(a)
 #a是否有NA(not available)
 ```
 
-
-
 ```{r}
 c <- c("台北市","新北市","高雄市")
 d <- c("台北市","新北市")
 e <- c("女","男","女")
-
+#練習
 # 第一題
 (c %in% d) & (e=="女")
 # 第二題
@@ -53,19 +70,77 @@ xor(c %in% d, e=="女")
 which(e=="女")
 #可以知道那幾筆資料是true
 ```
-
+～～～～～～～～例題1～～～～～～～～
 ```{r}
 library(readr)
 exData2 <- read_csv("https://raw.githubusercontent.com/tpemartin/github-data/master/exData2.csv")
 date <- as.character(exData2$期間)
 currency <- exData2$幣別
 exchangeRate <- exData2$匯率
-# $ 將資料某個部分提取
+# "$" 將資料某個部分提取
 ```
-
-
-
-
+答案
+```{r}
+date2<- as.Date(date)
+#將上面擷取的時間轉換成r看得懂的形式
+date3<- as.double(date2)
+#date2的時間和1970-01-01相比差幾天
+####為什麼又由正轉負？？？？
+which(date3<=0)
+which(currency=="歐元USD/EUR")
+#前705皆為"歐元USD/EUR"
+ER1<-na.omit(exchangeRate)
+#去除exchangeRate中的na，ER1和exchangeRate數目相減的na數
+```
+筆記
+```{r}
+as.integer(ymd("2019-03-11"))
+#和時間原點“1970-01-01”差多幾天－－－17966天
+Sys.Date()
+#给出當前日期
+today <- Sys.Date()
+dob <- as.Date("1956-10-12")
+difftime(today, dob, units="weeks")
+#當前日期和1956-10-12差幾週
+```
+～～～～～～～～例題2～～～～～～～～
+```{r}
+library(readr)
+transcriptDataFinal <- read_csv("https://raw.githubusercontent.com/tpemartin/github-data/master/transcriptDataFinal.csv")
+courseType <- transcriptDataFinal$`必選修類別（必∕選∕通）`
+major <- transcriptDataFinal$學系
+studentID <- transcriptDataFinal$學號
+grade <- transcriptDataFinal$學期成績
+```
+答案
+```{r}
+which(major=="經濟學系")
+#（答）16926人是經濟學系
+aaa<-transcriptDataFinal[studentID=="5bdS6977b",]
+#在此也可以寫成   aaa<-transcriptDataFinal[transcriptDataFinal$學號=="5bdS6977b",]
+#（答）總共66堂
+gradeaaa<-aaa$學期成績
+aab<-subset(aaa,gradeaaa>=60)
+#aab<-transcriptDataFinal[studentID=="5bdS6977b",grade>=60]哪裡錯？？@@
+#不能使用aab<-subset(aaa,grade>=60)，因為grade向量不為aaa資料所創
+#（答）全部都及格
+aac<-transcriptDataFinal[major=="經濟學系"&courseType=="選",]
+#（答）6261 筆
+aad<-transcriptDataFinal[major=="經濟學系"&courseType=="必",]
+gradeaad<-aad$學期成績
+aae<-subset(aad,gradeaad<=59)
+#（答）496/9005=0.055
+```
+筆記
+```{r}
+f<- matrix(c(1:20),nrow=5,ncol=4,
+,dimnames = list(c("a1", "a2","a3","b1","b2"),
+     c("c1", "c2","d1", "d2")))
+g<-f[3,]
+#這只能找第幾row的資料，不符合題目要求
+h<-transcriptDataFinal[substr(major,1,4)=="法律學系",]
+#將學系前四個字有"法律學系"選出來
+```
 
 
 
