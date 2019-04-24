@@ -184,6 +184,7 @@ str_split(dates,"-")
 ```{r}
 str_replace(dates,"-","/")
 str_replace_all(dates,"-","/")
+#只能將character換character
 ```
 練習題－1
 ```{r}
@@ -210,17 +211,61 @@ birthday1<-str_split(birthday,"/")
 西元日期<-str_c(西元年,"年",月,"月")
 西元日期
 ```
-
+Practice 1
 ```{r}
 gender <- c("男性", "男性", "女性", "男性", "女性", "男性")
+性別<- factor(x = gender, levels = c("男性", "女性"), labels = c("Male", "Female"))
+```
+Practice 2
+```{r}
+library(readr)
+library(stringr)
+library(lubridate)
+TyphoonData <- read_csv("https://raw.githubusercontent.com/GaryLKL/course-programming-for-ds-Quiz/master/TyphoonData.csv", col_types = cols(.default = col_character()))
+Year<-as.integer(TyphoonData$年份)
+#將資料變成“整數列”
+民國<-as.character(Year-1911)
+str_c("民國",民國,"西元",Year)
 
-性別<-factor()
-  str_replace_all(gender,c("男性","女性"),c("Male","Female")
-性別
+發布月<-substring(TyphoonData$發布警報時間,6,7)
+```
+Practice 3
+```{r}
+房租月<-sprintf("%02d", seq(from=01,to=12,by=1))
+#sprintf("%02d", )指將數值以兩位數方式呈現
+房租2018<-str_c("2018","-",房租月,"-","10")
+房租2019<-str_c("2019","-",房租月,"-","10")
+房租<-ymd(c(房租2018,房租2019))
 
+library(lubridate)
+房租星期<-wday(房租)
+房租星期
 ```
 
-
+```{r}
+library(readr)
+source <-read_csv("https://raw.githubusercontent.com/GaryLKL/course-programming-for-ds-Quiz/master/AverageSalary.csv")
+十年薪資<-tail(source,n=10)
+#將資料‘source’前十筆存入‘十年薪資’
+營造業薪資<-source$營造業
+營造業平均<-mean(營造業薪資)
+營造業最大值<-max(營造業薪資)
+營造業最小值<-min(營造業薪資)
+```
+Practice 3筆記
+```{r}
+p3<-seq(from=01,to=12,length.out=5)
+p3_1<-seq(from=01,to=24,along.with=房租月)
+#length.out 表示要求只出現5個數值（1～12分5等分）
+#along.with 表示要求只出現和“p3_1”一樣多的數值（5個數值）
+```
+Practice 4
+```{r}
+library(readr)
+TyphoonData <- read_csv("https://raw.githubusercontent.com/GaryLKL/course-programming-for-ds-Quiz/master/TyphoonData.csv")
+str_replace_all(TyphoonData,TyphoonData$`7級風暴風半徑(km)`,as.integer(TyphoonData$`7級風暴風半徑(km)`))
+class(TyphoonData)
+```
 
 
 
