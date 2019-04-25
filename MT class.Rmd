@@ -138,7 +138,7 @@ aae<-subset(aad,gradeaad<=59)
 筆記
 ```{r}
 f<- matrix(c(1:20),nrow=5,ncol=4,
-,dimnames = list(c("a1", "a2","a3","b1","b2"),
+dimnames = list(c("a1", "a2","a3","b1","b2"),
      c("c1", "c2","d1", "d2")))
 g<-f[3,]
 #這只能找第幾row的資料，不符合題目要求
@@ -263,30 +263,77 @@ Practice 4
 ```{r}
 library(readr)
 TyphoonData <- read_csv("https://raw.githubusercontent.com/GaryLKL/course-programming-for-ds-Quiz/master/TyphoonData.csv")
-str_replace_all(TyphoonData,TyphoonData$`7級風暴風半徑(km)`,as.integer(TyphoonData$`7級風暴風半徑(km)`))
-class(TyphoonData)
+近臺強度_factor<-as.factor(str_replace_all(TyphoonData$近臺,"---","0"))
+最低氣壓_數值<-as.numeric(str_replace_all(TyphoonData$`最低氣壓(hPa)`,"---","0"))
+最大風速_數值<-as.numeric(str_replace_all(TyphoonData$`最大風速(m/s)`,"---","0"))
+十級風暴風半徑_數值<-as.numeric(str_replace_all(TyphoonData$`10級風暴風半徑(km)`,"---","0"))
+七級風暴風半徑_數值<-as.numeric(str_replace_all(TyphoonData$`7級風暴風半徑(km)`,"---","0"))
+#將不足的資料用0來代替
+資料<-data.frame(近臺強度=近臺強度_factor,最低氣壓=最低氣壓_數值,最大風速=最大風速_數值,七級風暴風半徑=七級風暴風半徑_數值,十級風暴風半徑=十級風暴風半徑_數值)
+
+index1 <- which(TyphoonData$年份 >= 2009) 
+#將年份 >= 2009的資料做標記（which可判別T or F，也可以拿來做標記）
+近十年<-TyphoonData[index1,]
+#列出已做標記的資料
+table(近十年$近臺強度)
+#用table可以數物件內的所有資料個數
+
+index2 <- TyphoonData$年份 %in% 2009:2018
+#和which相同，可以判別T or F的指令，皆有座標記的功能
+近十年1<-TyphoonData[index2,]
+近十年_近臺強度為中度<-近十年1[近十年1$近臺強度 %in% "中度",]
+#再用%in%做一次標記
+近十年_近臺強度為中度_max風速<-max(近十年_近臺強度為中度$`最大風速(m/s)`)
+近十年_近臺強度為中度_max風速
+```
+Practice 5
+```{r}
+library(readr)
+IMDBData <- read_csv("https://raw.githubusercontent.com/GaryLKL/course-programming-for-ds-Quiz/master/imdb_movies.csv")
+#head(IMDBData)
+dim(IMDBData)
+#有幾個row和column
+ncol(IMDBData)
+#有幾個column
+nrow(IMDBData)
+#有幾個row
+dimnames(IMDBData)
+#將行列的名字列出
+names(IMDBData)
+colnames(IMDBData)
+#將行的名字列出
+summary(IMDBData)
+
+AntMan<-summary(IMDBData[IMDBData$片名=="Ant-Man",])
+#名字不能有"-"
+table(IMDBData$年份)
+最短電影<-IMDBData[min(which(complete.cases(IMDBData$片長))),]
+#complete.cases判別是否有na（故可以做標記），na.omit則直接移除na
+#complete.cases判別data.frame時，只要有na就會判別 FALSE
+nrow(data.frame(table(IMDBData$類型)))
+#table轉data.frame時變數會在row
+片長分類<-cut(IMDBData$片長,c(0,90,120,150,500),c(1,2,3,4))
+#c(0,90,120,150,500)將“片長”用五個數值分四段，分別用c(1,2,3,4)來標記）
+
 ```
 
 
 
 
+Practice 6
+```{r}
+library(readr)
+data<- read_csv("https://raw.githubusercontent.com/GaryLKL/course-programming-for-ds-Quiz/master/Yilan.csv")
 
+summary(complete.cases(data))
+#complete.cases判別data.frame時，只要有na就會判別 FALSE
+nrow(data)
+ncol(data)
+```
 
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
+```{r}
+unique()
+```
 
 
 
