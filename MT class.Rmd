@@ -151,7 +151,7 @@ library(stringr)
 ```
 字串選取
 ```{r}
-  c <- c("台北市","新北市","高雄市")
+c <- c("台北市","新北市","高雄市")
 str_subset(c,"台北市")
 #功能類似 %in%
 str_detect(c,"台北市")
@@ -159,8 +159,8 @@ str_detect(c,"台北市")
 ```
 字串合成
 ```{r}
-  month <- c("3","4","2")
-  day <- c("11","5","7")
+month <- c("3","4","2")
+day <- c("11","5","7")
 #要如何將上面兩個的字串組合成一個？有三種方法
 
 #第一種
@@ -177,7 +177,7 @@ str_c(month,day, sep="-")
 ```
 字串拆解
 ```{r}
-  dates <- c("3-11", "4-5",  "2-7")
+dates <- c("3-11", "4-5",  "2-7")
 str_split(dates,"-")
 ```
 字串取代
@@ -200,16 +200,19 @@ birthday1<-str_split(birthday,"/")
 生日月<-substring(birthday1,5,6)
 生日日<-substring(birthday1,7,8)
 生日<-str_c(生日年1,"年",生日月,"月",生日日,"日")
-生日
+生日[1:2]
+#[1:2]只顯示前兩個
 ```
 練習題－2
 ```{r}
+library(base)
 民國年月<-c("099/01","099/02","099/03")
 年<-as.numeric(substring(民國年月,1,3))
 西元年<-as.character(年+1912)
 月<-substring(民國年月,5,6)
-西元日期<-str_c(西元年,"年",月,"月")
-西元日期
+月_去零<-as.character(as.integer(substring(民國年月,5,6)))
+西元日期<-str_c(西元年,"年",月_去零,"月")
+西元日期[1:2]
 ```
 Practice 1
 ```{r}
@@ -316,10 +319,6 @@ nrow(data.frame(table(IMDBData$類型)))
 #c(0,90,120,150,500)將“片長”用五個數值分四段，分別用c(1,2,3,4)來標記）
 
 ```
-
-
-
-
 Practice 6
 ```{r}
 library(readr)
@@ -329,11 +328,121 @@ summary(complete.cases(data))
 #complete.cases判別data.frame時，只要有na就會判別 FALSE
 nrow(data)
 ncol(data)
+
 ```
 
 ```{r}
-unique()
+鄉鎮市區<-data.frame(鄉鎮市區代碼=data$鄉鎮市區代碼,鄉鎮市區名稱=data$鄉鎮市區名稱)
+unique(鄉鎮市區)
+#???????????????????????????????????????????????????????????? 用summary和unique ?????????????????????????????????????????????????????????????
 ```
+
+```{r}
+library(dplyr)
+#"??mutate_at"可以查mutate_at的package是什麼
+data1<- as_tibble(data)
+#yiersan<-mutate_at(data,c("縣市代碼","縣市名稱","鄉鎮市區代碼","鄉鎮市區名稱"),)
+c("a","b","c","d")
+#縣市名稱<-vars(data$縣市名稱)
+#鄉鎮市區代碼<-funs(data$鄉鎮市區代碼)
+#鄉鎮市區名稱<-parse_factor(data$鄉鎮市區名稱)
+library(forcats)
+yiersan<-parse_factor(data$縣市代碼,levels = NULL)
+yiersan
+??as.factor
+```
+
+```{r}
+a=c("a","b","c")
+b=c("a","b","d")
+c<-parse_factor(a,levels = b)
+```
+
+```{r}
+library(stringr)
+鄉鎮西元_年_數值<-as.numeric(substr(data$資料時間,1,3))+1911
+鄉鎮_月<-substr(data$資料時間,5,6)
+鄉鎮西元<-str_c(鄉鎮西元_年_數值,"西元",鄉鎮_月,"月")
+```
+
+
+```{r}
+羅東鎮最多人數<-max(data[data$鄉鎮市區名稱=="羅東鎮",]$遊客人數)
+羅東鎮最多人數
+```
+
+```{r}
+七月<-data[substring(data$資料時間,5,6)=="07",]
+七月總人數<-sum(七月$遊客人數)
+四月<-data[substring(data$資料時間,5,6)=="04",]
+四月總人數<-sum(四月$遊客人數)
+四月group<-group_by(data$資料時間,a=sum(data$遊客人數))
+#"data$資料時間"形式為character，且不能轉成table，而group_by只接受table的資料，所以目前還不知道怎麼不用%>% 寫group_by
+data%>% 
+  group_by(資料時間) %>% 
+  summarise(sum(遊客人數,na.rm=T))
+#用group_by的寫法
+```
+Practice 7
+```{r}
+library(readr)
+library(dplyr)
+library(summarytools)
+library(lubridate)
+library(stringr)
+nba_data <- read_csv("https://raw.githubusercontent.com/GaryLKL/course-programming-for-ds-Quiz/master/GSW_Stat.csv")
+```
+
+```{r}
+#以下為尋找row的的遺失資料，有兩種方式
+p7_1<-nba_data[!complete.cases(nba_data),]
+#第一種：！為“非”的意思
+p7_2<-dfSummary(nba_data)
+p7_3<-p7_2$Missing
+#第二種：用dfSummary將nba_data的訊息以col來分類（這裡有36col）對他做訊息的整理，再將整理完的訊息做成另一張表（這裡有36row），我們將其中的Missing資訊提出
+p7_4<-summary(nba_data)
+# 會出現36和數值有關個表
+```
+
+～～～～～～～～～～～～第六章～～～～～～～～～～～～～～～～～～
+```{r}
+a<-matrix(c(1:12),4,3)
+宜蘭的鄉鎮<-c("宜蘭市","羅東鎮","蘇澳鎮","頭城鎮","礁溪鄉","壯圍鄉","員山鄉","冬山鄉","五結鄉","三星鄉")
+b<-as.data.frame(宜蘭的鄉鎮)
+c<-list(c(1:10),a,b)
+d<-c[2]
+#將list中的第2個列出來
+#?????????????????????????????????????????????????????? 怎麼將第二東西（矩陣）中的東西提出 ???????????????????????
+
+```
+
+```{r}
+your_github_username <- "tpemartin"
+your_practice_reponame <- "107-2-inclass-practice"
+library(httr)
+library(stringr)
+str_replace_all("https://api.github.com/repos/:owner/:repo/commits") -> commitCheckStatement
+commitCheck <- content(GET(commitCheckStatement))
+commitCheck 
+```
+
+```{r}
+library(jsonlite)
+library(RCurl)
+a <- fromJSON(getURL("https://api.github.com/repos/:owner/:repo/commits"))
+```
+
+```{r}
+library(XML)
+a <- xmlParse("https://api.github.com/repos/:owner/:repo/commits")
+```
+
+```{r}
+a <- url("https://api.github.com/repos/:owner/:repo/commits")
+a
+```
+
+
 
 
 
