@@ -392,7 +392,7 @@ library(lubridate)
 library(stringr)
 nba_data <- read_csv("https://raw.githubusercontent.com/GaryLKL/course-programming-for-ds-Quiz/master/GSW_Stat.csv")
 ```
-
+Q1-1,2
 ```{r}
 #以下為尋找row的的遺失資料，有兩種方式
 p7_1<-nba_data[!complete.cases(nba_data),]
@@ -401,8 +401,89 @@ p7_2<-dfSummary(nba_data)
 p7_3<-p7_2$Missing
 #第二種：用dfSummary將nba_data的訊息以col來分類（這裡有36col）對他做訊息的整理，再將整理完的訊息做成另一張表（這裡有36row），我們將其中的Missing資訊提出
 p7_4<-summary(nba_data)
-# 會出現36和數值有關個表
+# 會出現36個表，描述此36個數值有關的資訊
 ```
+Q1-3,4
+```{r}
+Birth_date<-nba_data$`Birth Date`
+mdy(Birth_date)->a
+#可以將“February 8, 1990” 改成 "1990-08-19"
+salary<-as.numeric(str_replace(str_replace(str_sub(nba_data$Salary,2),",",""),",",""))
+#一次只能消一個
+salary2<-as.numeric(parse_number(str_sub(nba_data$Salary,2),na=c(",")))
+#可以一次消全部
+```
+Q2
+```{r}
+Wt<-summary(nba_data$Wt)
+Age<-summary(nba_data$Age)
+GS<-summary(nba_data$GS)
+資料<-data.frame(min=c(Wt[1],Age[1],GS[1]),Max=c(Wt[6],Age[6],GS[6]),Median=c(Wt[3],Age[3],GS[3]),Mean=c(Wt[4],Age[4],GS[4]),row.names=c("Wt","Age","GS"))
+資料
+```
+Q3-1,2
+```{r}
+a<-nba_data[complete.cases(nba_data$`3PA`),]
+b<-a[max(a$`3PA`),]
+#？？？？？？？？？？？？？？？？？？？？？？？？？？？？？？？？？？出現的不是最大值   ？？？？？？？？？？？？？？？？？？？？？？？？？？
+c<-a[a$`3P%`>=0.4,]
+#？？？？？？？？？？？？？？？？？？？？？？？？？？？？？？？？？？為什麼會有na         ？？？？？？？？？？？？？？？？？？？？？？？？？？？
+```
+Q3-3,4,5
+```{r}
+library(dplyr)
+排序PTS_G<-sort(na.omit(nba_data$`PTS/G`))
+取出PTS_G<-nba_data[complete.cases(nba_data$`PTS/G`),]
+排序取出PTS_G<-nba_data[with(nba_data,order(nba_data$`PTS/G`)),]
+Salary_level<-cut(salary2,c(0,5000000,10000000,20000000,30000000, 40000000),c(1,2,3,4,5))
+nba_data_1<-cbind(nba_data,cbind(Salary_level))
+#由columns形式合併
+薪資得分<-nba_data_1[c("G","Salary_level")]
+薪資得分排序<-薪資得分[with(薪資得分,order(I(薪資得分$Salary_level/薪資得分$G))),]
+```
+not
+```{r}
+# https://sites.google.com/site/rlearningsite/manage/merge   資料處理
+nba_data_notna<-nba_data_1[complete.cases(Salary_level),]
+nba_data_na<-nba_data_1[!complete.cases(Salary_level),]
+#將Salary_level是na和非na分開
+合併na_notna<-rbind(nba_data_notna,nba_data_na)
+#由row形式合併 
+只有薪資<-nba_data_1[,c("Player","Salary")]
+只有編號<-nba_data_1[1:2]
+薪資編號合併<-merge(只有薪資,只有編號,by="Player")
+#將兩個資料以Player為基礎合併
+```
+Practice 8
+Q1
+```{r}
+odd <- vector("numeric", 10)
+#建立一個10空格的空向量
+for(i in 1:10){odd[i] <- 2 * i - 1}
+#odd 後面不加[i]，只會將最後一個存入
+```
+Q2
+```{r}
+multipler1<-vector("numeric", 10)
+for(i in 1:10){multipler1[i]<-paste0(1,"*",i,"=",1*i)}
+#如果要將多個字串連接起來，可以使用 paste 函數, 加0可以使連結更密集
+```
+Q3
+```{r}
+multipler <- matrix(rep(0, 9*9),ncol = 9)
+#rep(0, 9*9) 另9*9個0
+a<-vector("numeric", 9)
+for (i in 1:9) for(j in 1:9){multipler[i,j]<-paste0(i, "*", j, "=", i*j)}
+#for迴圈可以直接疊加
+```
+Q4
+```{r}
+library(readr)
+library(dplyr)
+TyphoonData <- read_csv("https://raw.githubusercontent.com/GaryLKL/course-programming-for-ds-Quiz/master/TyphoonData.csv")
+```
+
+
 
 ～～～～～～～～～～～～第六章～～～～～～～～～～～～～～～～～～
 ```{r}
