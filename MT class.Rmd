@@ -483,6 +483,30 @@ library(dplyr)
 TyphoonData <- read_csv("https://raw.githubusercontent.com/GaryLKL/course-programming-for-ds-Quiz/master/TyphoonData.csv")
 ```
 
+```{r}
+
+TyphoonData$`最大風速(m/s)`<-as.numeric(TyphoonData$`最大風速(m/s)`)
+#將最大風速的資料改成“數值”再存回去
+近臺強度fac<-as.factor(TyphoonData$近臺強度)
+#將factor近臺強度提出（不需存回）
+airpressure<- vector("numeric",4)
+#造出有4個空格的vector
+for(i in 1:4){
+近臺強度各類分離<-
+  TyphoonData[TyphoonData$近臺強度==levels(近臺強度fac)[i], ]
+#levels(近臺強度fac)[1]＝－－－，levels(近臺強度fac)[2]＝強烈...以此類推，                i＝1時“近臺強度各類分離”只有“近臺強度”＝－－－的資料              i＝2時“近臺強度各類分離”只有“近臺強度”＝強烈 的資料  i＝3時“近臺強度各類分離”只有“近臺強度”＝輕度 的資料  i＝4時“近臺強度各類分離”只有“近臺強度”＝中度 的資料
+airpressure[i]<- mean(近臺強度各類分離$`最大風速(m/s)`, na.rm = T)}
+#將各別資料存入airpressure
+```
+Q5
+```{r}
+TyphoonData$近臺強度<-as.factor(TyphoonData$近臺強度)
+TyphoonData$`最大風速(m/s)`<-as.numeric(TyphoonData$`最大風速(m/s)`)
+TyphoonData%>% 
+  group_by(近臺強度) %>% 
+  summarise(mean(`最大風速(m/s)`,na.rm=T))
+#用%>%只能直接打`最大風速(m/s)`
+```
 
 
 ～～～～～～～～～～～～第六章～～～～～～～～～～～～～～～～～～
