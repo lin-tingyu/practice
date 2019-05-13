@@ -507,7 +507,50 @@ TyphoonData%>%
   summarise(mean(`最大風速(m/s)`,na.rm=T))
 #用%>%只能直接打`最大風速(m/s)`
 ```
+Practice 9
+Q1
+```{r}
+star<-factor(rep("*",5))
+star1<-paste0(star,collapse = "")
+#collapse可以去掉符號
+```
 
+```{r}
+for(i in 1:10){
+  cat(paste0(rep("*", i), collapse = ""), sep = "\n")}
+#cut(,sep = "\n") 表示執行完就換行
+#paste0(, collapse = "")  如果沒有打這行，每一個＊（非i）就算執行完一次
+```
+
+```{r}
+college<-list("studentnumber","courses","midtermscores","examscores")
+names(college)<-c("學號","科目","期中考分數","小考分數")
+# 這些名字會比原本的list等級還高
+for (i in 2:4) {print(college[[i]])}
+```
+Q3
+```{r}
+library(stringr)
+#1
+fruit <- c("banana", "apple", "水梨", "西瓜", "pineapple")
+#2、3、4
+vec <- c("aabba", "cbada", "aidea", "adalw", "abab", "bbbaaa")
+```
+
+
+```{r}
+rep(1, 40*(1-.8))
+rep(1, 8)
+40*(1-.8)
+fred <- list(happy = 1:10, name = "squash")
+rep(fred, 5)
+x <- factor(LETTERS[1:4]); names(x) <- letters[1:4]
+class(x)
+rep(x, 2)
+rep.int(x, 2)
+class(names(x))
+a<-"*"
+```
 
 ～～～～～～～～～～～～第六章～～～～～～～～～～～～～～～～～～
 ```{r}
@@ -515,10 +558,8 @@ a<-matrix(c(1:12),4,3)
 宜蘭的鄉鎮<-c("宜蘭市","羅東鎮","蘇澳鎮","頭城鎮","礁溪鄉","壯圍鄉","員山鄉","冬山鄉","五結鄉","三星鄉")
 b<-as.data.frame(宜蘭的鄉鎮)
 c<-list(c(1:10),a,b)
-d<-c[2]
-#將list中的第2個列出來
-#?????????????????????????????????????????????????????? 怎麼將第二東西（矩陣）中的東西提出 ???????????????????????
-
+d<-c[[3]][[1]]
+#將list中的第2個列出來，再將這個東西的第五個元素提出
 ```
 
 ```{r}
@@ -527,24 +568,56 @@ your_practice_reponame <- "107-2-inclass-practice"
 library(httr)
 library(stringr)
 str_replace_all("https://api.github.com/repos/:owner/:repo/commits") -> commitCheckStatement
+#找不到這個網址
 commitCheck <- content(GET(commitCheckStatement))
 commitCheck 
 ```
 
 ```{r}
-library(jsonlite)
-library(RCurl)
-a <- fromJSON(getURL("https://api.github.com/repos/:owner/:repo/commits"))
+install.packages("plotly")
+download.file("https://github.com/tpemartin/github-data/blob/master/plotly_4070_neda.Rda?raw=true",destfile = "plotly_4070_neda.Rda")
+load("plotly_4070_neda.Rda")
+library(plotly)
+plotly_4070_neda
+
+plotly_4070_neda$x$layout$shapes[[1]]$opacity<-0.8
+plotly_4070_neda
+#不知道是什麼？？？？
 ```
 
 ```{r}
-library(XML)
-a <- xmlParse("https://api.github.com/repos/:owner/:repo/commits")
+library(readr)
+filmVotingData <- read_csv("https://raw.githubusercontent.com/tpemartin/github-data/master/podcastcompetition3.csv")
+str_replace(filmVotingData$請選擇你最喜歡的影片二部,", by"," by") -> favoriteTwo
+birthday <- filmVotingData$`出生西元年月日（驗證本人用）`
+timeStamp <- filmVotingData$Timestamp
 ```
 
 ```{r}
-a <- url("https://api.github.com/repos/:owner/:repo/commits")
-a
+library(stringr)
+str_split(favoriteTwo,", ") -> favoriteTwoList
+# 將選擇的兩片split成兩個元素
+#將一個元素由“, ”切成兩個元素
+unlist(favoriteTwoList) -> allVotes # 將list堆疊成atomic vector
+#將上述切成兩個元素的東西測底分成不同的character
+allVotes[[1]][[1]]
+table(allVotes) # 計算每個類別的次數
+```
+
+```{r}
+StuDF <- data.frame(
+  姓名=c("小明","大雄","胖虎","小新","大白"),
+  stringsAsFactors = FALSE)
+#stringsAsFactors = FALSE可以使character存在data.frame中
+```
+
+```{r}
+matObj1 <- matrix(LETTERS[1:15],5,3)
+matObj1[3,2] 
+matObj1[c(F,F,TRUE,F,F),c(F,TRUE,F)]
+#找出矩陣中row＝3，col＝2，的兩種方法
+#LETTERS[1:15]就是 "A" "B" "C" "D" "E" "F" "G" "H" "I" "J" "K" "L" "M" "N" "O"
+
 ```
 
 
