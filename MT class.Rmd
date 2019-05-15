@@ -520,6 +520,7 @@ for(i in 1:10){
   cat(paste0(rep("*", i), collapse = ""), sep = "\n")}
 #cut(,sep = "\n") 表示執行完就換行
 #paste0(, collapse = "")  如果沒有打這行，每一個＊（非i）就算執行完一次
+
 ```
 
 ```{r}
@@ -532,24 +533,60 @@ Q3
 ```{r}
 library(stringr)
 #1
-fruit <- c("banana", "apple", "水梨", "西瓜", "pineapple")
+fruit <- c("banana", "蘋果apple", "水梨", "西瓜", "pineapple")
 #2、3、4
 vec <- c("aabba", "cbada", "aidea", "adalw", "abab", "bbbaaa")
-```
+str_which(fruit, "[a-z]" )
+#有哪幾個是英文字母（只要有英文就算
+str_subset(fruit, "^a")
+#開頭為a
+str_subset(fruit, "a$")
+#結尾為a
+str_subset(fruit, "a")
+#列出有“a”的東西
 
+```
+Practice 10
+Q1
+ ls[[2]] <- "E"
+    3,E,5,D,C,A
+ ls$tag[1][1] <- "E"
+    3,4,5,E,C,A
+ ls[2][[1]][3] <- "E"
+    E,4,5,E,E
+ ls$tag[2]
+    3,4,5,D,E,A
+???????????????????????????????????????????不知道答案？？？？？？？？？？？？？？
+Q3
+```{r}
+ls <- list('大一國文' = 85, '專業英文' = 90, '微積分' = 75, '個體經濟學' = 95, '總體經濟學' = 78)
+library(stringr)
+for(i in seq_along(ls)) {ls[i] <- 1.05 * unlist(ls[i])}
+#將ls[i]該成unlist(ls[i]),只把數字部份提出
+
+names(ls)#將非數字的部分提出
+
+for(i in str_which(names(ls),"經濟學")){print(ls[i])}
+#str_which(names(ls),"經濟學") 找出有"經濟學"的項目
+```
+Q4
+```{r}
+library(readr)
+library(dplyr)
+library(tidyr)
+TyphoonData <- read_csv("https://raw.githubusercontent.com/GaryLKL/course-programming-for-ds-Quiz/master/TyphoonData.csv")
+
+TyphoonData$nestedtyphoondata<-as.factor(TyphoonData$年份-1957)
+二零一零<-TyphoonData[TyphoonData$nestedtyphoondata==I(2010-1957),]
+
+```
+Practice 11
 
 ```{r}
-rep(1, 40*(1-.8))
-rep(1, 8)
-40*(1-.8)
-fred <- list(happy = 1:10, name = "squash")
-rep(fred, 5)
-x <- factor(LETTERS[1:4]); names(x) <- letters[1:4]
-class(x)
-rep(x, 2)
-rep.int(x, 2)
-class(names(x))
-a<-"*"
+library(dplyr)
+library(titanic) 
+install.packages("titanic")
+
 ```
 
 ～～～～～～～～～～～～第六章～～～～～～～～～～～～～～～～～～
