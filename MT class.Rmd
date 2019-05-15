@@ -586,7 +586,36 @@ Practice 11
 library(dplyr)
 library(titanic) 
 install.packages("titanic")
+titanic
 
+```
+
+```{r}
+library(titanic)
+titanic_train<-as.data.frame(titanic_train)
+titanic_test<-knitr::kable(titanic_test)
+titanic_train_frame<-as.data.frame(titanic_train)
+class(titanic_train)
+#knitr 轉檔   https://zhuanlan.zhihu.com/p/36919769
+```
+
+```{r}
+library(titanic)
+knitr::kable(head(titanic_train))
+#https://www.rdocumentation.org/packages/titanic/versions/0.1.0
+#????????????????????????????????????????????????????????
+```
+
+```{r}
+合併<-rbind(titanic_train,titanic_test)
+```
+
+
+
+
+
+```{r}
+aaa<-download.file("https://www.kaggle.com/c/titanic/data",destfile ="titanic_train")
 ```
 
 ～～～～～～～～～～～～第六章～～～～～～～～～～～～～～～～～～
@@ -621,7 +650,7 @@ plotly_4070_neda$x$layout$shapes[[1]]$opacity<-0.8
 plotly_4070_neda
 #不知道是什麼？？？？
 ```
-
+6.4.6
 ```{r}
 library(readr)
 filmVotingData <- read_csv("https://raw.githubusercontent.com/tpemartin/github-data/master/podcastcompetition3.csv")
@@ -629,7 +658,6 @@ str_replace(filmVotingData$請選擇你最喜歡的影片二部,", by"," by") ->
 birthday <- filmVotingData$`出生西元年月日（驗證本人用）`
 timeStamp <- filmVotingData$Timestamp
 ```
-
 ```{r}
 library(stringr)
 str_split(favoriteTwo,", ") -> favoriteTwoList
@@ -640,22 +668,95 @@ unlist(favoriteTwoList) -> allVotes # 將list堆疊成atomic vector
 allVotes[[1]][[1]]
 table(allVotes) # 計算每個類別的次數
 ```
-
+～～～～～～～～～～～～第七章～～～～～～～～～～～～～～～
 ```{r}
 StuDF <- data.frame(
   姓名=c("小明","大雄","胖虎","小新","大白"),
   stringsAsFactors = FALSE)
 #stringsAsFactors = FALSE可以使character存在data.frame中
 ```
-
+7.4
 ```{r}
 matObj1 <- matrix(LETTERS[1:15],5,3)
 matObj1[3,2] 
 matObj1[c(F,F,TRUE,F,F),c(F,TRUE,F)]
 #找出矩陣中row＝3，col＝2，的兩種方法
 #LETTERS[1:15]就是 "A" "B" "C" "D" "E" "F" "G" "H" "I" "J" "K" "L" "M" "N" "O"
-
 ```
+7.5
+```{r}
+colnames(matObj1) <-c('欄位1','欄位2','欄位3')
+rownames(matObj1) <-c('行：1','行：2','行：3','行：4','行：5')
+matObj1
+# 這些names會比原本的內容等級還高
+```
+7.6.1
+```{r}
+b <- list(元素1=1,元素2="Hello",元素3=TRUE)
+b[3]<-FALSE
+b[5]<-7
+#跳過的[4]會會變成NULL
+```
+
+```{r}
+library(readr)
+library(lubridate)
+exData3 <- read_csv("https://raw.githubusercontent.com/tpemartin/github-data/master/exData3.csv",col_types = cols(匯率 = col_number(),期間 = col_character()))
+期間<- ymd(exData3$期間)
+#ymd內一定要是字串
+qiang<-期間<=ymd("1998-12-01")
+huo<-期間>=ymd("1997-06-01")
+exData3$isAsiaCrisis<-huo&qiang
+#data.class可以直接比大小
+亞洲金融危機的子樣本<-exData3[exData3$isAsiaCrisis,]
+```
+7.6.2
+
+```{r}
+a2 <- c(2,5,10)
+a2[c(3,7)] <- c(-1,0)
+#將數列第3，7該成－1，0
+```
+
+```{r}
+StuDF <- data.frame(
+  學號=c(172,214,322,425,517),
+  姓名=c("小明","大雄","胖虎","小新","大白"),
+  成績=c(80,60,90,70,50)
+  )
+StuDF[c(3,4)]<-list(StuDF[3]-5,StuDF[3]>=60)
+#有TRUE／FALSE和數字，所以要用list
+```
+
+```{r}
+revert <- seq(10,1,by=-1)
+a3 <- c('Q','B','W','U','J','D','L','V','X','G')
+a3[revert]-> a3
+#[ ]可表順序
+```
+第七章課堂練習
+```{r}
+library(readr)
+classSurvey <- read_csv("https://raw.githubusercontent.com/tpemartin/github-data/master/classSurvey.csv")
+```
+
+```{r}
+library(base)
+dim(classSurvey)
+classSurvey$年級<-cut(as.numeric(substr(classSurvey$學號,4,5)),c(40,50,60,70,80),c("大四","大三","大二","大一"))
+#學號<-as.factor(classSurvey$學號)
+#學年<-as.numeric(substr(學號,4,5))
+#classSurvey$年級<-cut(學年,c(40,50,60,70,80),c("大四","大三","大二","大一")))
+#class(學年)
+summary(classSurvey$年級)
+summary(classSurvey[!classSurvey$年級=="大一",]$性別=="男")
+#大二以上<-classSurvey[!classSurvey$年級=="大一",]
+summary(classSurvey[classSurvey$年級=="大一",]$性別=="男")
+table(classSurvey$本學期目前已參加之課外活動)
+table(classSurvey$居住地行政區)
+```
+
+
 
 
 
